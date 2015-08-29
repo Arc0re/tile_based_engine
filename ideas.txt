@@ -1,0 +1,10 @@
+1: j-rpg, comme Final Fantasy I & II
+- map avec scrolling
+- combats
+- xp, lvls, magie, objets
+- classes
+
+
+OU
+2: platformer (mais le saut me fait chier)
+- metroid like ?
