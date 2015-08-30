@@ -108,6 +108,9 @@ var update = function(modifier) {
 var render = function() {
 	
 	// Map loads
+	if (map01Ready) {
+		ctx.drawImage(map01Image, 0, 0);
+	}
 	if (currentMap === "map01") {
 		if (map01Ready) {
 			ctx.drawImage(map01Image, 0, 0);
