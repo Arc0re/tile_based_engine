@@ -32,6 +32,9 @@ bigmapImage.onload = function() {
 	bigmapReady = true;
 };
 bigmapImage.src = "assets/maps/bigmap.png";
+var bigmapX = 0;
+var bigmapY = 0;
+var bigmapSpeed = 150;
 
 /* Characters */
 var heroReady = false;
@@ -74,17 +77,20 @@ addEventListener("keyup", function(event) {
 var currentMap = "bigmap";
 var update = function(modifier) {
 	if (38 in keysDown) { // UP
-		hero.y -= hero.speed * modifier;
-		//jumping = setInterval(jump(hero), 100);
+		//hero.y -= hero.speed * modifier;
+		bigmapY += bigmapSpeed * modifier;
 	}
 	if (40 in keysDown) { // DOWN
-		hero.y += hero.speed * modifier;
+		//hero.y += hero.speed * modifier;
+		bigmapY -= bigmapSpeed * modifier;
 	}
 	if (37 in keysDown) { // LEFT
-		hero.x -= hero.speed * modifier;
+		//hero.x -= hero.speed * modifier;
+		bigmapX += bigmapSpeed * modifier;		
 	}
 	if (39 in keysDown) { // RIGHT
-		hero.x += hero.speed * modifier;
+		//hero.x += hero.speed * modifier;
+		bigmapX -= bigmapSpeed * modifier;
 	}
 	
 	// Map stuff
@@ -112,7 +118,7 @@ var render = function() {
 		}
 	} else if (currentMap === "bigmap") {
 		if (bigmapReady) {
-			ctx.drawImage(bigmapImage, 0, 0);
+			ctx.drawImage(bigmapImage, bigmapX, bigmapY);
 		}
 	}
 	
