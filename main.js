@@ -34,7 +34,7 @@ bigmapImage.onload = function() {
 bigmapImage.src = "assets/maps/bigmap.png";
 var bigmapX = 0;
 var bigmapY = 0;
-var bigmapSpeed = 150;
+var bigmapSpeed = /*150*/500;
 
 /* Characters */
 var heroReady = false;
@@ -55,7 +55,7 @@ var hero = {
 var game = function() {
 	hero.x = canvas.width / 2;
 	hero.y = canvas.height / 2;
-}
+};
 
 
 
@@ -77,20 +77,26 @@ addEventListener("keyup", function(event) {
 var currentMap = "bigmap";
 var update = function(modifier) {
 	if (38 in keysDown) { // UP
-		//hero.y -= hero.speed * modifier;
-		bigmapY += bigmapSpeed * modifier;
+		if (hero.y >= bigmapY) {
+			bigmapY += bigmapSpeed * modifier;
+		}
 	}
 	if (40 in keysDown) { // DOWN
-		//hero.y += hero.speed * modifier;
-		bigmapY -= bigmapSpeed * modifier;
+		console.log(bigmapY);
+		if (bigmapY > - 688) {
+			bigmapY -= bigmapSpeed * modifier;			
+		}
 	}
 	if (37 in keysDown) { // LEFT
-		//hero.x -= hero.speed * modifier;
-		bigmapX += bigmapSpeed * modifier;		
+		if (hero.x >= bigmapX) {
+			bigmapX += bigmapSpeed * modifier;
+		}
 	}
 	if (39 in keysDown) { // RIGHT
-		//hero.x += hero.speed * modifier;
-		bigmapX -= bigmapSpeed * modifier;
+		//console.log(bigmapX);
+		if (bigmapX > -740) {
+			bigmapX -= bigmapSpeed * modifier;		
+		}
 	}
 	
 	// Map stuff
@@ -99,7 +105,7 @@ var update = function(modifier) {
 		hero.x = 0;
 		console.log(currentMap);
 	}
-}
+};
 
 
 
@@ -129,7 +135,7 @@ var render = function() {
 	if (heroReady) {
 		ctx.drawImage(heroImage, hero.x, hero.y);
 	}
-}
+};
 
 // --- MAIN GAME LOOP --- //
 
@@ -143,7 +149,7 @@ var main = function() {
 	then = now;
 	
 	requestAnimationFrame(main);
-}
+};
 
 
 // Starting the bloody game
