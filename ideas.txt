@@ -1,10 +1,16 @@
 1: j-rpg, comme Final Fantasy I & II
 - map avec scrolling
-- combats
+- combats au tour par tour
 - xp, lvls, magie, objets
 - classes
 
+* map size: 1024*960 ?
 
-OU
+
 2: platformer (mais le saut me fait chier)
 - metroid like ?
+
+3: zelda-like, minish cap
+- combats en temps réel
+- objets, pas d'xp
+- zone par zone, + facile

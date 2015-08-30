@@ -26,6 +26,13 @@ map02Image.onload = function() {
 };
 map02Image.src = "assets/maps/map02.png";
 
+var bigmapReady = false;
+var bigmapImage = new Image();
+bigmapImage.onload = function() {
+	bigmapReady = true;
+};
+bigmapImage.src = "assets/maps/bigmap.png";
+
 /* Characters */
 var heroReady = false;
 var heroImage = new Image();
@@ -37,16 +44,14 @@ heroImage.src = "assets/hero.png";
 /* Game objects */
 var hero = {
 	speed: 256,
-	isGoingDown: false,
-	jumpLimit: (canvas.height - 64),
 	x: 0,
 	y: 0
 };
 
 /* New Game */
 var game = function() {
-	hero.x = 0;
-	hero.y = (canvas.height - 32);
+	hero.x = canvas.width / 2;
+	hero.y = canvas.height / 2;
 }
 
 
@@ -61,38 +66,19 @@ addEventListener("keydown", function(event) {
 }, false);
 
 addEventListener("keyup", function(event) {
-	delete keysDown[event.keyCode];
+	delete keysDown[event.keyCode]; // Or = false
 }, false);
 
 // Update
 
-var jumping;
-
-var jump = function(entity) {
-	if (entity.y > entity.jumpLimit && !entity.isGoingDown) {
-		entity.y -= 10;
-	} else {
-		entity.isGoingDown = true;
-		entity.y += 64;
-		console.log(entity.y);
-		if (entity.y < (canvas.height - 32)) {
-			clearInterval(jumping);
-			entity.isGoingDown = false;
-		}
-	}
-}
-
-var currentMap = "map01";
+var currentMap = "bigmap";
 var update = function(modifier) {
-	/* Jump ! */
 	if (38 in keysDown) { // UP
-		//hero.y -= hero.speed * modifier;
-		jumping = setInterval(jump(hero), 100);
+		hero.y -= hero.speed * modifier;
+		//jumping = setInterval(jump(hero), 100);
 	}
 	if (40 in keysDown) { // DOWN
-		if (hero.y >= (canvas.height + 64)) {
-			hero.y += hero.speed * modifier;
-		}
+		hero.y += hero.speed * modifier;
 	}
 	if (37 in keysDown) { // LEFT
 		hero.x -= hero.speed * modifier;
@@ -123,6 +109,10 @@ var render = function() {
 	} else if (currentMap === "map02") {
 		if (map02Ready) {
 			ctx.drawImage(map02Image, 0, 0);
+		}
+	} else if (currentMap === "bigmap") {
+		if (bigmapReady) {
+			ctx.drawImage(bigmapImage, 0, 0);
 		}
 	}
 	
