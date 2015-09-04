@@ -3,9 +3,10 @@
 // Creating the canvas
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = 512;
-canvas.height = 480;
+canvas.width = 480;
+canvas.height = 512;
 ctx.imageSmoothingEnabled = false; // FOR PIXEL SCALING YEAH
+ctx.mozImageSmoothingEnabled = false;
 document.body.appendChild(canvas);
 
 // Creating and loading assets
@@ -19,7 +20,6 @@ forest_tile = new Tile('assets/tiles/forest_tile.png');
 grass_tile = new Tile('assets/tiles/grass_tile.png');
 town_tile = new Tile('assets/tiles/town_tile.png');
 water_tile = new Tile('assets/tiles/water_tile.png');
-//hero_tile = new Tile('assets/hero.png');
 
 function Entity(src, speed) {
 	this.tile = new Tile(src);
@@ -46,6 +46,17 @@ var worldMap = [
 	[0,0,2,2,2,2,2,2,2,2,2,2,2,2,0,0],
 	[0,0,2,2,2,2,2,2,2,2,2,2,2,2,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+];
+
+var garden = [
+	[1,1,1,1,1,1,1,1],
+	[1,1,1,1,1,1,1,1],
+	[1,1,2,2,1,2,2,2],
+	[1,1,1,1,1,1,1,1],
+	[1,1,1,1,1,1,1,1],
+	[1,1,2,2,1,2,2,2],
+	[1,1,1,1,1,1,1,1],
+	[1,1,1,1,1,1,1,1]
 ];
 
 
@@ -83,32 +94,53 @@ function update(modifier) {
 // --- RENDERING --- //
 
 function render() {
-		
-	for (var i = 0; i < worldMap.length; i++) {
-		for (var j = 0; j < worldMap[i].length; j++) {
-			if (worldMap[i][j] === 0) {
-				ctx.drawImage(water_tile.image, 0, 0, 32, 32, i*32, j*32, 32, 32);
-			}
-			if (worldMap[i][j] === 1) {
-				ctx.drawImage(grass_tile.image, 0, 0, 32, 32, i*32, j*32, 32, 32);
-			}
-			if (worldMap[i][j] === 2) {
-				ctx.drawImage(forest_tile.image, 0, 0, 32, 32, i*32, j*32, 32, 32);
-			}
-			if (worldMap[i][j] === 3) {
-				ctx.drawImage(town_tile.image, 0, 0, 32, 32, i*32, j*32, 32, 32);
+
+	function drawMap(map) {
+		for (var i = 0; i < map.length; i++) {
+		for (var j = 0; j < map[i].length; j++) {
+			switch (map[i][j]) {
+				case 0:
+					ctx.drawImage(water_tile.image, 0, 0, 32, 32, i*32, j*32, 32, 32);
+					break;
+				case 1:
+					ctx.drawImage(grass_tile.image, 0, 0, 32, 32, i*32, j*32, 32, 32);
+					break;
+				case 2:
+					ctx.drawImage(forest_tile.image, 0, 0, 32, 32, i*32, j*32, 32, 32);
+					break;
+				case 3:
+					ctx.drawImage(town_tile.image, 0, 0, 32, 32, i*32, j*32, 32, 32);
+					break;
+				}
 			}
 		}
 	}
-	// for (var i = 0; i < canvas.width; i++) {
-	// 	for (var j = 0; j < canvas.height; j++) {
-	// 		// ctx.drawImage(grass_tile.image, (i * 32), (j * 32));
-	// 		ctx.drawImage(town_tile.image, 0, 0, 32, 32, i*64, j*64, 64, 64);
-	// 	}
-	// }
 
-	
-	ctx.drawImage(hero.tile.image, 0, 0, 32, 32, hero.x, hero.y, 64, 64);
+	function drawMapScale(map, scaling) {
+		for (var i = 0; i < map.length; i++) {
+		for (var j = 0; j < map[i].length; j++) {
+			switch (map[i][j]) {
+				case 0:
+					ctx.drawImage(water_tile.image, 0, 0, 32, 32, i*scaling, j*scaling, scaling, scaling);
+					break;
+				case 1:
+					ctx.drawImage(grass_tile.image, 0, 0, 32, 32, i*scaling, j*scaling, scaling, scaling);
+					break;
+				case 2:
+					ctx.drawImage(forest_tile.image, 0, 0, 32, 32, i*scaling, j*scaling, scaling, scaling);
+					break;
+				case 3:
+					ctx.drawImage(town_tile.image, 0, 0, 32, 32, i*scaling, j*scaling, scaling, scaling);
+					break;
+				}
+			}
+		}
+	}
+
+	drawMap(worldMap);
+	//drawMapScale(garden, 32*2);
+
+	ctx.drawImage(hero.tile.image, 0, 0, 32, 32, hero.x, hero.y, 32, 32);
 }
 
 // --- MAIN GAME LOOP --- //
@@ -116,7 +148,6 @@ function render() {
 function main() {
 	var now = Date.now();
 	var delta = now - then;
-	
 	update(delta / 1000); // 1000 ms
 	render();
 	then = now;
