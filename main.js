@@ -8,7 +8,6 @@ canvas.height = 480;
 ctx.imageSmoothingEnabled = false; // FOR PIXEL SCALING YEAH
 document.body.appendChild(canvas);
 
-
 // Creating and loading assets
 function Tile(src) {
 	this.image = new Image();
@@ -20,7 +19,16 @@ forest_tile = new Tile('assets/tiles/forest_tile.png');
 grass_tile = new Tile('assets/tiles/grass_tile.png');
 town_tile = new Tile('assets/tiles/town_tile.png');
 water_tile = new Tile('assets/tiles/water_tile.png');
-hero_tile = new Tile('assets/hero.png');
+//hero_tile = new Tile('assets/hero.png');
+
+function Entity(src, speed) {
+	this.tile = new Tile(src);
+	this.x = 0;
+	this.y = 0;
+	this.speed = speed;
+}
+
+hero = new Entity('assets/hero.png', 250);
 
 var worldMap = [
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -51,43 +59,30 @@ addEventListener("keydown", function(event) {
 }, false);
 
 addEventListener("keyup", function(event) {
-	delete keysDown[event.keyCode]; // Or = false
+	delete keysDown[event.keyCode];
 }, false);
 
-
 // Update
-var update = function(modifier) {
+function update(modifier) {
 	
-	/*var worldControls = function() {
-		if (38 in keysDown) { // UP
-			if (hero.y >= bigmapY) {
-				bigmapY += bigmapSpeed * modifier;
-			}
-		}
-		if (40 in keysDown) { // DOWN
-			if (bigmapY > - 688) {
-				bigmapY -= bigmapSpeed * modifier;			
-			}
-		}
-		if (37 in keysDown) { // LEFT
-			if (hero.x >= bigmapX) {
-				bigmapX += bigmapSpeed * modifier;
-			}
-		}
-		if (39 in keysDown) { // RIGHT
-			if (bigmapX > -740) {
-				bigmapX -= bigmapSpeed * modifier;
-			}
-		}
-	};
-	*/
-	
-};
+	if (38 in keysDown) { // UP
+		hero.y -= hero.speed*modifier;
+	}
+	if (40 in keysDown) { // DOWN
+		hero.y += hero.speed*modifier;
+	}
+	if (37 in keysDown) { // LEFT
+		hero.x -= hero.speed*modifier;
+	}
+	if (39 in keysDown) { // RIGHT
+		hero.x += hero.speed*modifier;
+	}
+}
 
 
 // --- RENDERING --- //
 
-var render = function() {
+function render() {
 		
 	for (var i = 0; i < worldMap.length; i++) {
 		for (var j = 0; j < worldMap[i].length; j++) {
@@ -111,12 +106,14 @@ var render = function() {
 	// 		ctx.drawImage(town_tile.image, 0, 0, 32, 32, i*64, j*64, 64, 64);
 	// 	}
 	// }
-	ctx.drawImage(hero_tile.image, 0, 0, 32, 32, (canvas.width/2)-32, (canvas.height/2)-32, 64, 64);
-};
+
+	
+	ctx.drawImage(hero.tile.image, 0, 0, 32, 32, hero.x, hero.y, 64, 64);
+}
 
 // --- MAIN GAME LOOP --- //
 
-var main = function() {
+function main() {
 	var now = Date.now();
 	var delta = now - then;
 	
@@ -124,7 +121,7 @@ var main = function() {
 	render();
 	then = now;
 	requestAnimationFrame(main);
-};
+}
 
 
 // Starting the bloody game
