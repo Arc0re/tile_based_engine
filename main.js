@@ -3,7 +3,7 @@
 // Creating the canvas
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = 480;
+canvas.width = 512; // 480
 canvas.height = 512;
 ctx.imageSmoothingEnabled = false; // FOR PIXEL SCALING YEAH
 ctx.mozImageSmoothingEnabled = false;
@@ -45,6 +45,7 @@ var worldMap = [
 	[0,0,1,2,1,2,1,1,1,1,1,1,1,1,0,0],
 	[0,0,2,2,2,2,2,2,2,2,2,2,2,2,0,0],
 	[0,0,2,2,2,2,2,2,2,2,2,2,2,2,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 ];
 
@@ -140,7 +141,7 @@ function render() {
 	drawMap(worldMap);
 	//drawMapScale(garden, 32*2);
 
-	ctx.drawImage(hero.tile.image, 0, 0, 32, 32, hero.x, hero.y, 32, 32);
+	ctx.drawImage(hero.tile.image, 0, 0, 32, 32, hero.x, hero.y, 32*4, 32*4);
 }
 
 // --- MAIN GAME LOOP --- //
